@@ -50,7 +50,7 @@ module.exports = {
   },
   sellItem(req, res, next) {
     const newItem = req.body;
-
+    delete newItem.categories;
     const sellerId = (req.user ? req.user.user.id : 39);
 
     newItem.images = JSON.stringify(newItem.images);
