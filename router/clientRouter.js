@@ -29,6 +29,8 @@ router
 
 // Search routes
 router
-  .get('search/:q/:cat?', search);
+  .get('/search/:q/:cat?', search)
+  .get('/sugestions', suggestions.getSuggestions)
+  .get('/recent', suggestions.getRecent);
 
 module.exports = router;
