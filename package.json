@@ -1,0 +1,50 @@
+{
+  "name": "BitBargain",
+  "version": "1.0.0",
+  "description": "Buy all of the bits!",
+  "main": "server/server.js",
+  "private": true,
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test",
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DynamicTeapot/DynamicTeapot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DynamicTeapot/DynamicTeapot/issues"
+  },
+  "homepage": "https://github.com/DynamicTeapot/DynamicTeapot#readme",
+  "dependencies": {
+    "aws-sdk": "^2.6.6",
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
+    "coinbase": "^2.0.6",
+    "elasticsearch": "^11.0.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "knex": "^0.12.1",
+    "morgan": "^1.7.0",
+    "nodemailer": "^2.6.4",
+    "passport": "^0.3.2",
+    "passport-coinbase": "^0.1.2",
+    "passport-local": "^1.0.0",
+    "pg": "^6.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.6.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-plugin-import": "^1.15.0",
+    "mocha": "^3.0.2",
+    "nodemon": "^1.10.2",
+    "path": "^0.12.7"
+  }
+}
