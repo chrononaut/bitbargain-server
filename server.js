@@ -15,8 +15,8 @@ app.use(bodyParser.json({
 }));
 app.use(morgan('dev'));
 app.use('/', authRouter);
+app.use('/api/', clientRouter);
 app.use('/api/track/:id$', userTracker);
-app.use('/api', clientRouter);
 
 app.listen(port, () => {
   console.log(`app is listening on ${port}`);
