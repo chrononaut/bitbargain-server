@@ -38,6 +38,7 @@
     "passport-coinbase": "^0.1.2",
     "passport-local": "^1.0.0",
     "pg": "^6.1.0",
+    "request": "^2.75.0",
     "yup": "^0.21.2"
   },
   "devDependencies": {

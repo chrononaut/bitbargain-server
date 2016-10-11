@@ -6,6 +6,7 @@ const search = require('../search/search.js');
 const passport = require('passport');
 const images = require('../controllers/imageController');
 const suggestions = require('../controllers/suggestionController');
+const categories = require('../controllers/categoryController');
 
 // General Routes for nothing specific
 router
@@ -27,6 +28,10 @@ router
 
 // Images Routes
   .post('/image', images.addImage)
+
+// Categorization Routes
+  .post('/categories/predict', categories.predict)
+  .post('/categories/fit', categories.fit);
 
 // Search routes
   .get('suggestions', suggestions.getSuggestions)
