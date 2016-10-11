@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "mocha test",
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,8 @@
     "passport": "^0.3.2",
     "passport-coinbase": "^0.1.2",
     "passport-local": "^1.0.0",
-    "pg": "^6.1.0"
+    "pg": "^6.1.0",
+    "yup": "^0.21.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
