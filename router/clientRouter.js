@@ -24,11 +24,11 @@ router
 
 // Images Routes
   .post('/image', images.addImage)
-  .get('/api/recent', suggestions.getRecent)
-  .get('/api/suggestions', suggestions.getSuggestions);
+  .get('recent', suggestions.getRecent)
+  .get('suggestions', suggestions.getSuggestions);
 
 // Search routes
 router
-  .get('/api/search/:q/:cat?', search);
+  .get('search/:q/:cat?', search);
 
 module.exports = router;

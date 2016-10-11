@@ -14,13 +14,9 @@ app.use(bodyParser.json({
   limit: '50mb'
 }));
 app.use(morgan('dev'));
-app.use(express.static('client'));
 app.use('/', authRouter);
-app.use('/items/:id$', userTracker);
-app.use('/', clientRouter);
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/index.html'));
-});
+app.use('/api/items/:id$', userTracker);
+app.use('/api', clientRouter);
 
 app.listen(port, () => {
   console.log(`app is listening on ${port}`);
