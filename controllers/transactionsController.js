@@ -45,8 +45,8 @@ module.exports = {
     db.transactions.getByItemId(req.body.id)
     .then(item => Promise.all([db.users.getById(item[0]['seller_id']), db.users.getById(req.user.user.id)]))
     .then(users => {
-      buyer = users[0].email;
-      seller = users[1].email;
+      seller = users[0].email;
+      buyer = users[1].email;
     })
     .then(() => bitcoin.move(buyer, seller, remainder))
     .then(result => bitcoin.move(buyer, fees, fee))
