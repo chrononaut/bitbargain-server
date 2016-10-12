@@ -71,11 +71,12 @@ class ElSearch {
    * @param {object} item - An object that has certain properties to insert.
    * @return {Promise<object>} Returns false if the object does not meet criteria.
    */
-  insertItem(item) {
+  insertItem(item, ref = false) {
     return this.client.index({
       index: this.index,
       id: item.id,
       type: 'ALL',
+      refresh: ref,
       body: item
     });
   }
@@ -127,10 +128,11 @@ class ElSearch {
    * @param {string} type - A string representing an object id.
    * @return {Promise<JSON>} Returns a JSON object as a result.
    */
-  deleteItem(itemId) {
+  deleteItem(itemId, ref = false) {
     return this.client.delete({
       index: this.index,
       type: 'ALL',
+      refresh: ref,
       id: itemId
     });
   }
