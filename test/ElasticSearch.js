@@ -6,27 +6,28 @@ const ElSearch = require('../search/elasticSearch');
 const es = new ElSearch('test');
 
 describe('ElasticSearch', () => {
-  describe('Hooks', () => {
-    // Create test index after each index.
-    beforeEach(es._init);
 
-    // Delete test index after each test.
-    afterEach(es._delete);
-
-    // Close the connection to elastic search when completed.
-    after(es.close);
-  });
-
-  describe('Ping', () => {
-    it('Should be able to connect to the server', (done) => {
-      es.ping().then((r) => {
+  before('Should be able to ping server before tests start', (done) => {
+    es.ping()
+      .then((r) => {
         if (r === true) {
           done();
         } else {
-          throw new Error('Could not connect to elastic search');
+          throw new Error('Could not ping server');
         }
-      });
-    });
+      })
+      .catch(e => throw new Error(`There was an error ${e}`));
   });
 
+  beforeEach('Create the testing index before each test', () => {
+    es._init();
+  });
+
+  afterEach('Delete testing index after each test', es._delete);
+
+  after('Close server connection upon completion', es.close);
+
+  describe('Should insert items into index', (done) => {
+    es.insert
+  });
 });
