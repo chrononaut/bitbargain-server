@@ -6,15 +6,20 @@ module.exports = {
     // all methods return a promise
     // getters resolve with -> [{...}, {...}, ...]
     // create methods can take an array of objects -> [{data}, {...}, ...]
+
+    //All queries relating to items are stored here
   items: {
+    //Get all items from the db: should never be called because the array will be massive
     getAll() {
       return db.select().from('items')
       .catch(err => console.error(`Error fetching data from "items" table ${err}`));
     },
+    //Deprecated
     getAllCategories() {
       return db('items').distinct('category').select('category')
       .catch(err => console.error(`Error getting categories ${err}`));
     },
+    //Gets an item by it's name, is never used
     getByTitle(title) {
       return db('items').where('title', title)
       .catch(err => console.error(`Error getting item by title ${err}`));
@@ -24,10 +29,12 @@ module.exports = {
       return db('items').where('category', category)
       .catch(err => console.error(`Error getting item by category ${err}`));
     },
+    //Gets an item by it's id
     getById(id) {
       return db('items').where('id', id)
       .catch(err => console.error(`Error getting item by id ${err}`));
     },
+    //Returns multiple items which have their id in an array of ids
     getByIds(ids) {
       return db('items').whereIn('id', ids)
       .catch(err => console.error(`Error getting item by id ${err}`));
@@ -51,19 +58,24 @@ module.exports = {
       .update('sold', 'true');
     }
   },
+  //All queries related to users
   users: {
+    //Returns a list of all users, usually isn't called because it will be a pretty large array
     getAll() {
       return db.select().from('users')
       .catch(err => console.error(`Error getting all users ${err}`));
     },
+    //Gets a user by their name, never called
     getByName(username) {
       return db('users').where('username', username)
       .catch(err => console.error(`Error getting user by username ${err}`));
     },
+    //Gets a user by email, used when serializing and deserializing from coinbase
     getByEmail(email) {
       return db('users').where('email', email)
       .catch(err => console.error(`Error getting user by email ${err}`));
     },
+    //Gets a user by id, used for relationial lookups
     getById(id) {
       return db('users').where('id', id)
       .catch(err => console.error(`Error getting user by id ${err}`));
@@ -74,18 +86,23 @@ module.exports = {
     create(user) {
       return db('users').insert(user, 'id');
     },
+    //Changes a field of the user entry by email, used to change coinbase id of a user
     updateUser(email, props) {
       return db('users').where('email', email).update(props);
     }
   },
+  //Transactions represent any time someone buys an item and all queries for tx are here
   transactions: {
+    //Returns all transactions, generally isn't called
     getAll() {
       return db.select().from('transactions')
       .catch(err => console.error(`Error getting all transactions ${err}`));
     },
+    //Get a transaction by the item being sold's id
     getByItemId(id) {
       return db('transactions').where('item_id', id);
     },
+    //Gets all disputes from the database
     getAllDisputes() {
       return db('transactions').where('order_status', 'disputed');
     },
@@ -96,6 +113,7 @@ module.exports = {
       return db('transactions').insert(data, 'id')
       .catch(err => console.error(`Error inserting into transactions table ${err}`));
     },
+    //Changes the status of a transaction, used for disputes and for who won and lost the dispute
     updateTransaction(id, props) {
       return db('transactions').where('id', id).update(props);
     }
@@ -141,6 +159,7 @@ module.exports = {
         .catch(e => console.error(`There was an error inserting into the tracker ${e}`));
     },
     getRecent(uid) {
+      //Gets the recent items a user was looking at by using a raw sql query.
       if (!uid || (typeof uid !== 'string' && typeof uid !== 'number')) {
         return Promise.reject(`Could not get recent items of user id '${uid}'`);
       }

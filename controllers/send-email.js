@@ -1,8 +1,10 @@
 const nodemailer = require('nodemailer');
 const secrets = require('../config/secrets');
 
+//A mailing service for when someone buys a product
 var poolConfig = 'smtps://user%40gmail.com:pass@smtp.gmail.com/?pool=true';
 
+//Gmail account info
 var poolConfig = {
   pool: true,
   host: 'smtp.gmail.com',
@@ -13,9 +15,10 @@ var poolConfig = {
     pass: secrets.emailPass
   }
 };
+//Creates a mailer
 const transporter = nodemailer.createTransport(poolConfig);
 
-
+//Exports a function which takes an email, and an item, and emails someone that their item has been sold on BB
 module.exports = (email, item) => {
   const mailOptions = {
     from: '<codebay.sales@gmail.com>', // sender address

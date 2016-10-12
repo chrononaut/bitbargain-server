@@ -38,6 +38,7 @@
     "passport-coinbase": "^0.1.2",
     "passport-local": "^1.0.0",
     "pg": "^6.1.0",
+    "request": "^2.75.0",
     "yup": "^0.21.2"
   },
   "devDependencies": {
@@ -46,7 +47,7 @@
     "eslint-config-airbnb": "^11.1.0",
     "eslint-plugin-import": "^1.15.0",
     "mocha": "^3.0.2",
-    "nodemon": "^1.10.2",
+    "nodemon": "^1.11.0",
     "path": "^0.12.7"
   }
 }

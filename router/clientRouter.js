@@ -6,8 +6,9 @@ const search = require('../search/search.js');
 const passport = require('passport');
 const images = require('../controllers/imageController');
 const suggestions = require('../controllers/suggestionController');
+const categories = require('../controllers/categoryController');
 
-// General Routes for nothing specific
+// General Routes for everything related to items including buying, selling, confirming, and finding user role
 router
   .get('/items/categories', itemController.getCategories)
   .get('/items/:id', itemController.getItem)
@@ -23,14 +24,17 @@ router
 
 // Transaction routes
   .get('/items/:id/:email/transaction', transController.findUserRole)
-  .post('/items/transaction', transactionsController.sendPayment)
+  .post('/items/transaction', transController.sendPayment)
 
-// Images Routes
+// Images Routes for uploading images to AWS
   .post('/image', images.addImage)
 
-// Search routes
+// Categorization Routes for sending to flask service so that it can categorize an item based on the title and description
+  .post('/categories/predict', categories.predict)
+  .post('/categories/fit', categories.fit)
+// Search routes for getting recent queries from elastic search and suggestions based on recent
   .get('suggestions', suggestions.getSuggestions)
   .get('recent', suggestions.getRecent)
-  .get('/search/:q/:cat?', search)
+  .get('/search/:q/:cat?', search);
 
 module.exports = router;
