@@ -24,11 +24,11 @@ router
 
 // Transaction routes
   .get('/items/:id/:email/transaction', transController.findUserRole)
-  .post('/items/transaction', transactionsController.sendPayment)
+  .post('/items/transaction', transController.sendPayment)
 
 // Images Routes for uploading images to AWS
   .post('/image', images.addImage)
-  
+
 // Categorization Routes for sending to flask service so that it can categorize an item based on the title and description
   .post('/categories/predict', categories.predict)
   .post('/categories/fit', categories.fit)
