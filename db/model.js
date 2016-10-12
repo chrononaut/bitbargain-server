@@ -1,5 +1,7 @@
 const db = require('./config');
-const es = require('../search/elasticSearch');
+const ElSearch = require('../search/elasticSearch');
+
+const es = new ElSearch();
 
 
 module.exports = {

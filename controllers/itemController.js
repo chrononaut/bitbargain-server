@@ -1,7 +1,9 @@
 const db = require('../db/model');
-const es = require('../search/elasticSearch');
+const ElSearch = require('../search/elasticSearch');
 const coinbase = require('coinbase');
 const sendEmail = require('./send-email');
+
+const es = new ElSearch();
 
 module.exports = {
   //Deprecated function for retrieving categories from db but is never used

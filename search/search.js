@@ -1,7 +1,8 @@
 // const items = require('./dummyItems.js');
-const es = require('./elasticSearch');
+const ElSearch = require('./elasticSearch');
 const db = require('../db/model');
 
+const es = new ElSearch();
 
 /**
  * @name search
