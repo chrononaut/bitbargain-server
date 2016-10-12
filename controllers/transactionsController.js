@@ -39,7 +39,6 @@ module.exports = {
     .catch(err => console.error('Error getting balance'))
   },
   sendPayment(req, res, next) {
-    console.log(req.user);
     const amount = Number(req.body.price);
     const fee = amount * 0.01, remainder = amount - fee;
     let buyer = '', seller = '';
