@@ -13,11 +13,11 @@ class ElSearch {
   /**
    * Create a connection.
    */
-  constructor() {
+  constructor(index = 'items') {
     this.client = new elasticsearch.Client({
       host: process.env.ELASTIC_HOST
     });
-    this.index = 'items';
+    this.index = index;
   }
 
   /**
@@ -28,6 +28,17 @@ class ElSearch {
    */
   _init() {
     this.client.indices.create({
+      index: this.index
+    })
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+  }
+
+  /**
+   * Delete the given index from elastic search.
+   */
+  _delete() {
+    this.client.indices.delete({
       index: this.index
     })
       .then(res => console.log(res))
@@ -126,4 +137,4 @@ class ElSearch {
 }
 
 
-module.exports = new ElSearch();
+module.exports = ElSearch;
