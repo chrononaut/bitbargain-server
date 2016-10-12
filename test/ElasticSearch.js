@@ -80,4 +80,20 @@ describe('ElasticSearch', () => {
         .catch(e => done(e));
     });
   });
+
+  describe('deleting items', () => {
+    it('Should not error out when deleting an item');
+
+    it('Should be able to delete specific items');
+
+    it('Should not delete the wrong items');
+  });
+
+  describe('searching items', () => {
+    it('Should be able to search items');
+
+    it('Should return items with a given phrase in just the title');
+
+    it('Should return items with a given phrase in the description');
+  });
 });
