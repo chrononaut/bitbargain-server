@@ -15,7 +15,7 @@ class ElSearch {
    */
   constructor() {
     this.client = new elasticsearch.Client({
-      host: 'localhost:9200'
+      host: '52.52.22.4:9200'
     });
     this.index = 'items';
   }

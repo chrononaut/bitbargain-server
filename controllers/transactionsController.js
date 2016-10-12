@@ -1,6 +1,8 @@
 const db = require('../db/model');
 const bitcoin = require('../bitcoin/config');
 
+//Used to determine whether the current user purchased the viewed item,
+
 module.exports = {
   createAccount(req, res) {
     // create new account with identifier

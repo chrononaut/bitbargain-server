@@ -3,7 +3,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const CoinbaseStrategy = require('passport-coinbase').Strategy;
 // const VenmoStrategy = require('passport-venmo').Strategy;
 
+//Function which accepts a passport and then allows it to use different strategies
 const configure = (passport) => {
+  //Local Strategy only returns username which is actually the email
   passport.use(new LocalStrategy(
     {
       usernameField: 'email'
@@ -12,6 +14,8 @@ const configure = (passport) => {
   );
 
   // scope options: https://developers.coinbase.com/docs/wallet/permissions
+  // Coinbase Strategy uses the access token, and allows users to create checkouts, refund orders, and allows us access
+  // To their profile and wallet
   passport.use(new CoinbaseStrategy({
     clientID: secrets.coinbaseClient,
     clientSecret: secrets.coinbaseSecret,
@@ -20,6 +24,7 @@ const configure = (passport) => {
   },
    (accessToken, refreshToken, profile, done) => done(null, { profile, accessToken, refreshToken }))
   );
+  // Was planning on using venmo but escrowing us $ requires a special license
  // passport.use(new VenmoStrategy({
   //   clientID:
   //   clientSecret:
