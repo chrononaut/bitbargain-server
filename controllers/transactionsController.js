@@ -39,18 +39,20 @@ module.exports = {
     .catch(err => console.error('Error getting balance'))
   },
   sendPayment(req, res) {
+    const amount = Number(req.body.price);
     const fee = amount * 0.01, remainder = amount - fee;
     let buyer = '', seller = '';
 
     db.transactions.getByItemId(req.body.id)
-    .then(item => Promise.all([db.users.getById(item[seller_id]), db.users.getById(item[buyer_id])]))
+    .then(item => Promise.all([db.users.getById(item['seller_id']), db.users.getById(item['buyer_id'])]))
     .then(users => {
+      console.log(users);
       buyer = users[0].email;
       seller = users[1].email;
     })
     .then(() => bitcoin.move(buyer, seller, remainder))
     .then(result => bitcoin.move(buyer, fees, fee))
     .then(result => res.send('Payment sent'))
-    .catch(err => console.error('Error sending payment'));
+    .catch(err => console.error('Error sending payment', err));
   }
 };
