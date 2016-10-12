@@ -45,3 +45,6 @@ newrelic.js
 # Test data
 db/data.json
 secrets.js
+
+# SFTP
+sftp-config.json

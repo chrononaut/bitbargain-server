@@ -1,6 +1,6 @@
 const db = require('../db/model');
 const bitcoin = require('../bitcoin/config');
-var getExchangeRates = require("get-exchange-rates-usd");
+const getExchangeRates = require('get-exchange-rates-usd');
 
 //Used to determine whether the current user purchased the viewed item,
 
@@ -34,27 +34,35 @@ module.exports = {
   getAccountBalance(req, res, next) {
     bitcoin.getBalance(req.body.email)
     .then(result => {
-      // console.log(result);
       res.json({result});
     })
-    .catch(err => next('Error getting balance'))
+    .catch(err => next('Error getting balance'));
   },
   sendPayment(req, res, next) {
     const amount = Number(req.body.price);
     const fee = amount * 0.01;
-    let buyer = '', seller = '';
-    let rates;
+    let buyer, seller, rates;
+
     db.transactions.getByItemId(req.body.id)
     .then(item => Promise.all([db.users.getById(item[0]['seller_id']), db.users.getById(req.user.user.id)]))
     .then(users => {
       seller = users[0][0].email;
       buyer = users[1][0].email;
-      return getExchangeRates();
+
+      return bitcoin.getBalance(buyer)
+        .then(balance => {
+          if (balance >= amount + fee) {
+            return getExchangeRates();
+          }
+          else {
+            throw new Error('Buyer has negative balance');
+          } 
+        });
     })
-    .then(usdRates => {rates = usdRates})
+    .then(usdRates => rates = usdRates)
     .then(() => bitcoin.move(buyer, seller, (amount*rates.BTC).toFixed(8)))
-    .then(result => bitcoin.move(buyer, 'fees', (fee*rates.BTC).toFixed(8)))
-    .then(result => res.send('Payment sent'))
+    .then(() => bitcoin.move(buyer, 'fees', (fee*rates.BTC).toFixed(8)))
+    .then(() => res.send('Payment sent'))
     .catch(err => next(err));
   }
 };
