@@ -20,17 +20,17 @@ router
   .get('/disputes', itemController.getDisputes)
   .post('/disputes', itemController.resolveDisputes)
   .post('/disputes/:id', itemController.startDispute)
+
+// Transaction routes
   .get('/items/:id/:email/transaction', transController.findUserRole)
+  .post('/items/transaction', transactionsController.sendPayment)
 
 // Images Routes
   .post('/image', images.addImage)
-  .get('recent', suggestions.getRecent)
-  .get('suggestions', suggestions.getSuggestions);
 
 // Search routes
-router
+  .get('suggestions', suggestions.getSuggestions)
+  .get('recent', suggestions.getRecent)
   .get('/search/:q/:cat?', search)
-  .get('/sugestions', suggestions.getSuggestions)
-  .get('/recent', suggestions.getRecent);
 
 module.exports = router;
