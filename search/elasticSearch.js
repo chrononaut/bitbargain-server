@@ -89,7 +89,7 @@ class ElSearch {
       index: this.index,
       type: 'ALL',
       q: `id:${id}`
-    });
+    }).then(res => res.hits.hits);
   }
 
   /**
