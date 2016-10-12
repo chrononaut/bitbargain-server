@@ -54,7 +54,7 @@ describe('ElasticSearch', () => {
 
   describe('Inserting Items', () => {
     it('Should not get an error when inserting an item', (done) => {
-      es.insertItem(dummyItems[0])
+      es.insertItem(dummyItems[0], true)
         .then(() => done())
         .catch(e => done(e));
     });
@@ -68,7 +68,7 @@ describe('ElasticSearch', () => {
         .catch(e => done(e));
     });
 
-    it('Should have equality of inserted items', (done) => {
+      it('Should have equality of inserted items', (done) => {
       es.getItem(dummyItems[0].id)
         .then((r) => {
           const item = r[0]._source;
@@ -82,18 +82,37 @@ describe('ElasticSearch', () => {
   });
 
   describe('deleting items', () => {
-    it('Should not error out when deleting an item');
+    it('Should not error out when deleting an item', (done) => {
+      es.deleteItem(dummyItems[0].id)
+        .then(() => done())
+        .catch(e => done(e));
+    });
 
-    it('Should be able to delete specific items');
+    it('Should be able to delete specific items', (done) => {
+      es.insertItem(dummyItems[0], true)
+        .then(() => es.deleteItem(dummyItems[0].id, true))
+        .then(() => es.getItem(dummyItems[0].id))
+        .then(r => assert.isTrue(r.length === 0))
+        .then(() => done())
+        .catch(e => done(e));
+    });
 
-    it('Should not delete the wrong items');
+    it('Should not delete the wrong items', (done) => {
+      es.insertItem(dummyItems[0], true)
+        .then(() => es.insertItem(dummyItems[1], true))
+        .then(() => es.deleteItem(dummyItems[0].id, true))
+        .then(() => es.getItem(dummyItems[1].id))
+        .then(r => assert.isTrue(r.length > 0))
+        .then(() => done())
+        .catch(e => done(e));
+    });
   });
 
-  describe('searching items', () => {
-    it('Should be able to search items');
+  // describe('searching items', () => {
+  //   it('Should be able to search items');
 
-    it('Should return items with a given phrase in just the title');
+  //   it('Should return items with a given phrase in just the title');
 
-    it('Should return items with a given phrase in the description');
-  });
+  //   it('Should return items with a given phrase in the description');
+  // });
 });
