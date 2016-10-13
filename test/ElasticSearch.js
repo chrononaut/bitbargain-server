@@ -11,8 +11,8 @@ describe('ElasticSearch', () => {
       id: 1,
       created_at: '2016-09-21T21:05:00.000Z',
       updated_at: '2016-09-27T23:19:58.922Z',
-      title: 'Kitchen aid single wall oven',
-      description: '30 inch Kitchen aid',
+      title: 'foo bar dance',
+      description: 'foo',
       category: 'appliances - by owner',
       price: '$700',
       sold: false,
@@ -22,8 +22,8 @@ describe('ElasticSearch', () => {
       id: 2,
       created_at: '2016-09-17T22:37:00.000Z',
       updated_at: '2016-09-27T23:19:58.922Z',
-      title: 'Sewing Machine',
-      description: 'Antique Westinghouse',
+      title: 'foo',
+      description: 'chicken bar',
       category: 'antiques - by owner',
       price: '$40',
       sold: false,
@@ -108,11 +108,37 @@ describe('ElasticSearch', () => {
     });
   });
 
-  // describe('searching items', () => {
-  //   it('Should be able to search items');
+  describe('searching items', () => {
+    before('Delete, and then re-insert all items', (done) => {
+      dummyItems.forEach(item => es.deleteItem(item.id, true));
+      dummyItems.forEach(item => es.insertItem(item.id, true));
+      done();
+    });
 
-  //   it('Should return items with a given phrase in just the title');
+    it('Should return items with a given phrase in the title', (done) => {
+      const p1 = es.searchItems('foo')
+        .then(r => assert.equal(r.length, 2))
+        .catch(e => done(e));
+      const p2 = es.searchItems('dance')
+        .then((r) => {
+          console.log(r);
+          assert.equal(r.length, 1);
+          assert.equal(r[0]._source.id, 1);
+        }).catch(e => done(e));
+      Promise.all([p1, p2]).then(() => done());
+    });
 
-  //   it('Should return items with a given phrase in the description');
-  // });
+    it('Should return items with a given phrase in the description', (done) => {
+      const p1 = es.searchItems('bar')
+        .then(r => assert.equal(r.length, 2))
+        .catch(e => done(e));
+      const p2 = es.searchItems('foo')
+        .then((r) => {
+          console.log(r);
+          assert.equal(r.length, 1);
+          assert.equal(r[0]._source.id, 2);
+        }).catch(e => done(e));
+      Promise.all([p1, p2]).then(() => done());
+    });
+  });
 });
