@@ -60,7 +60,7 @@ describe('ElasticSearch', () => {
         .catch(e => done(e));
     });
 
-      it('Should have equality of inserted items', (done) => {
+    it('Should have equality of inserted items', (done) => {
       es.getItem(dummyItems[0].id)
         .then((r) => {
           const item = r[0]._source;
