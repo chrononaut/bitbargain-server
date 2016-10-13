@@ -17,7 +17,7 @@ describe('ElasticSearch', () => {
       price: '$700',
       sold: false,
       location: 'hayward / castro valley',
-      mages: null
+      images: null
     }, {
       id: 2,
       created_at: '2016-09-17T22:37:00.000Z',
