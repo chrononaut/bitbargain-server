@@ -111,34 +111,32 @@ describe('ElasticSearch', () => {
   describe('searching items', () => {
     before('Delete, and then re-insert all items', (done) => {
       dummyItems.forEach(item => es.deleteItem(item.id, true));
-      dummyItems.forEach(item => es.insertItem(item.id, true));
+      dummyItems.forEach(item => es.insertItem(item, true));
       done();
     });
 
     it('Should return items with a given phrase in the title', (done) => {
-      const p1 = es.searchItems('foo')
-        .then(r => assert.equal(r.length, 2))
-        .catch(e => done(e));
+      const p1 = es.searchItems('foo').then(r => assert.equal(r.length, 2));
       const p2 = es.searchItems('dance')
         .then((r) => {
           console.log(r);
           assert.equal(r.length, 1);
           assert.equal(r[0]._source.id, 1);
-        }).catch(e => done(e));
-      Promise.all([p1, p2]).then(() => done());
+        });
+
+      Promise.all([p1, p2]).then(() => done()).catch(e => done(e));
     });
 
     it('Should return items with a given phrase in the description', (done) => {
-      const p1 = es.searchItems('bar')
-        .then(r => assert.equal(r.length, 2))
-        .catch(e => done(e));
+      const p1 = es.searchItems('bar').then(r => assert.equal(r.length, 2));
       const p2 = es.searchItems('foo')
         .then((r) => {
           console.log(r);
           assert.equal(r.length, 1);
           assert.equal(r[0]._source.id, 2);
-        }).catch(e => done(e));
-      Promise.all([p1, p2]).then(() => done());
+        });
+
+      Promise.all([p1, p2]).then(() => done()).catch(e => done(e));
     });
   });
 });
