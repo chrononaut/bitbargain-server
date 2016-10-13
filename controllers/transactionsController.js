@@ -1,6 +1,7 @@
 const db = require('../db/model');
 const bitcoin = require('../bitcoin/config');
-var getExchangeRates = require("get-exchange-rates-usd");
+const getExchangeRates = require("get-exchange-rates-usd");
+const mail = require('./send-email.js');
 
 //Used to determine whether the current user purchased the viewed item,
 
@@ -54,7 +55,10 @@ module.exports = {
     .then(usdRates => {rates = usdRates})
     .then(() => bitcoin.move(buyer, seller, (amount*rates.BTC).toFixed(8)))
     .then(result => bitcoin.move(buyer, 'fees', (fee*rates.BTC).toFixed(8)))
-    .then(result => res.send('Payment sent'))
+    .then(result => {
+      res.json(`Successful Payment of ${Number((amount*rates.BTC).toFixed(8)) + Number((fee*rates.BTC).toFixed(8))} Bitcoins \n to ${seller}\n from ${buyer} at a rate of 1 USD for ${rates.BTC} BTC`)
+      mail.mailDouble(seller, buyer, req.body.title);
+    })
     .catch(err => next(err));
   }
 };
