@@ -13,11 +13,11 @@ class ElSearch {
   /**
    * Create a connection.
    */
-  constructor() {
+  constructor(index = 'items') {
     this.client = new elasticsearch.Client({
       host: process.env.ELASTIC_HOST
     });
-    this.index = 'items';
+    this.index = index;
   }
 
   /**
@@ -28,6 +28,17 @@ class ElSearch {
    */
   _init() {
     this.client.indices.create({
+      index: this.index
+    })
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+  }
+
+  /**
+   * Delete the given index from elastic search.
+   */
+  _delete() {
+    this.client.indices.delete({
       index: this.index
     })
       .then(res => console.log(res))
@@ -60,11 +71,12 @@ class ElSearch {
    * @param {object} item - An object that has certain properties to insert.
    * @return {Promise<object>} Returns false if the object does not meet criteria.
    */
-  insertItem(item) {
+  insertItem(item, ref = false) {
     return this.client.index({
       index: this.index,
       id: item.id,
       type: 'ALL',
+      refresh: ref,
       body: item
     });
   }
@@ -78,7 +90,7 @@ class ElSearch {
       index: this.index,
       type: 'ALL',
       q: `id:${id}`
-    });
+    }).then(res => res.hits.hits);
   }
 
   /**
@@ -116,14 +128,15 @@ class ElSearch {
    * @param {string} type - A string representing an object id.
    * @return {Promise<JSON>} Returns a JSON object as a result.
    */
-  deleteItem(itemId) {
+  deleteItem(itemId, ref = false) {
     return this.client.delete({
       index: this.index,
       type: 'ALL',
+      refresh: ref,
       id: itemId
     });
   }
 }
 
 
-module.exports = new ElSearch();
+module.exports = ElSearch;
