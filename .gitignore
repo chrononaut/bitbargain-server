@@ -38,6 +38,7 @@ psqlconfig.js
 
 # Environment variables
 env.js
+.env
 
 # New Relic
 newrelic.js

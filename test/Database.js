@@ -1,7 +1,5 @@
 const assert = require('chai').assert;
 
-const env = require('../env');
-
 describe('Database', () => {
   describe('Database Unit Tests', () => {
     const db = require('../db/model');
