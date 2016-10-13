@@ -2,6 +2,7 @@
 Author: Dynamic Teapots(Michael Zarivny, Andrew Ulick, Robert Siferd, Julian Knodt)
 */
 
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -26,4 +27,4 @@ app.listen(port, () => {
   console.log(`app is listening on ${port}`);
 });
 
-//Basic Node server 
+// Basic Node server

@@ -1,8 +1,5 @@
 const assert = require('chai').assert;
-
-const env = require('../env');
 const ElSearch = require('../search/elasticSearch');
-
 
 describe('ElasticSearch', () => {
   describe('ElasticSearch Unit Tests', () => {
