@@ -11,8 +11,8 @@ describe('ElasticSearch', () => {
       id: 1,
       created_at: '2016-09-21T21:05:00.000Z',
       updated_at: '2016-09-27T23:19:58.922Z',
-      title: 'foo bar dance',
-      description: 'foo',
+      title: 'foo',
+      description: 'bar',
       category: 'appliances - by owner',
       price: '$700',
       sold: false,
@@ -22,8 +22,8 @@ describe('ElasticSearch', () => {
       id: 2,
       created_at: '2016-09-17T22:37:00.000Z',
       updated_at: '2016-09-27T23:19:58.922Z',
-      title: 'foo',
-      description: 'chicken bar',
+      title: 'bar',
+      description: 'foo',
       category: 'antiques - by owner',
       price: '$40',
       sold: false,
@@ -115,28 +115,15 @@ describe('ElasticSearch', () => {
       done();
     });
 
-    it('Should return items with a given phrase in the title', (done) => {
-      const p1 = es.searchItems('foo').then(r => assert.equal(r.length, 2));
-      const p2 = es.searchItems('dance')
-        .then((r) => {
+    it('Should return items with a given phrase in the title and description', (done) => {
+      es.searchItems('foo')
+        .then(r => {
           console.log(r);
-          assert.equal(r.length, 1);
-          assert.equal(r[0]._source.id, 1);
-        });
-
-      Promise.all([p1, p2]).then(() => done()).catch(e => done(e));
-    });
-
-    it('Should return items with a given phrase in the description', (done) => {
-      const p1 = es.searchItems('bar').then(r => assert.equal(r.length, 2));
-      const p2 = es.searchItems('foo')
-        .then((r) => {
-          console.log(r);
-          assert.equal(r.length, 1);
-          assert.equal(r[0]._source.id, 2);
-        });
-
-      Promise.all([p1, p2]).then(() => done()).catch(e => done(e));
+          return r;
+        })
+        .then(r => assert.equal(r.length, 2))
+        .then(() => done())
+        .catch(e => done(e));
     });
   });
 });
