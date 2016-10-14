@@ -12,7 +12,7 @@
 
 # Get Item
 ----
- ##### Get an item using its ID
+##### Get an item using its ID
 
 * **URL**
 
@@ -51,7 +51,7 @@
   
 # Purchase Item
 ----
-  ### Purchase an item
+### Purchase an item
 
 * **URL**
 
@@ -96,7 +96,7 @@
   
 # Sell Item
 ----
-  ### Sell an item
+### Sell an item
 
 * **URL**
 
@@ -219,7 +219,6 @@
 
 * **Data Params**
 
-    "{"id:"..., "price:"...}"
     * id: String
     * price: Integer
     * email: String
