@@ -1,21 +1,18 @@
-# Journal app API documentation
+# API Endpoints
 
 **Table of Contents** 
 
 - [**Get Item**](#get-item)
-- [**Item Categories**](#item-categories)
 - [**Purchase Item**](#buy-item)
-- [**Sell item**](#sell-item)
-- [**See Item Status**](#status)
-- [**Update Item Details**](#update-item)
-- [**Remove Item**](#remove)
+- [**Sell Item**](#sell-item)
+- [**Transaction Role**](#transaction-role)
+- [**Transaction - Send Payment**](#transaction-send-payment)
 
 
 
-**Item**
+# Get Item
 ----
-  Get Item by ID
-  Delete Item by ID
+ ##### Get an item using its ID
 
 * **URL**
 
@@ -23,8 +20,7 @@
 
 * **Method:**
   
-  `GET`,
-  `DELETE`
+  `GET`
   
 *  **URL Params**
 
@@ -32,77 +28,30 @@
 
 *  **Data Params**
 
-  None
+    None
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
-    **Content:** `{ not yet defined }`
+  * **Code:** 200
+  * **Content:** `{ id: '', title: '', ... }`
  
 * **Error Response:**
 
-  * **Code:** 404  <br />
-    **Content:** `{ error : "Item does not exist" }`
-
-  OR
-
-  * **Code:** 404 <br />
-    **Content:** `{ error : "No id parameter supplied" }`
+  * **Code:** 404
+  * **Content:** `{ error : "Item does not exist" }`
 
 * **Sample Call:**
 
   ```javascript
     fetch('http://localhost:9009/items/:id', {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-  ```
-
-**Item Categories**
-----
-  Returns categories of items
-
-* **URL**
-
-  /items/categories
-
-* **Method:**
-  
-  `GET`
-  
-*  **URL Params**
-
-   None
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `[ String: Categories ]`
- 
-* **Error Response:**
-
-  * **Code:** 404  <br />
-
-* **Sample Call:**
-
-  ```javascript
-    fetch('http://localhost:9009/items/categories', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      credentials: 'include'
     })
   ```
   
-**Purchase Item**
+# Purchase Item
 ----
-  Purchase an item
+  ### Purchase an item
 
 * **URL**
 
@@ -114,42 +63,44 @@
   
 *  **Request Headers**
 
+    `Cookie: SESSION_ID`
   
 *  **URL Params**
 
-  id: Integer
-
+    id: Integer
+    
 * **Data Params**
 
-  userId
+  userId: String
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 200
  
 * **Error Response:**
 
-  * **Code:** 404  <br />
-  **Content:** `{ error: 'item not found'}`
+  * **Code:** 500
+  * **Content:** `{ error: 'Item not found' }`
 
 * **Sample Call:**
 
   ```javascript
     fetch('http://localhost:9009/items/:id/buy', {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
+      crendentials: 'include'
     })
   ```
   
-**Sell item**
+# Sell Item
 ----
-  Sell an item
+  ### Sell an item
 
 * **URL**
 
-  /item/:id/sell
+  /items/sell
 
 * **Method:**
   
@@ -161,120 +112,136 @@
    
 *  **Request Headers**
 
-  None
+    `Cookie: SESSION_ID` 
 
 * **Data Params**
 
-  None
+    * title: String
+    * description: String
+    * price: Integer
+    * categories: JSON Array
+    * images: JSON Array
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 200
  
 * **Error Response:**
 
-  * **Code:** 404  <br />
+  * **Code:** 500
 
 * **Sample Call:**
 
   ```javascript
-    fetch('http://localhost:3000/items/:id/sell', {
+    fetch('http://localhost:9009/items/sell', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: {
-        'something':'something'
-      }
+      body: JSON.stringify({
+        title: '',
+        description: '',
+        price: '',
+        submitted: false,
+        categories: [...],
+        images: [...]
+      },
+      credentials: 'include'
     })
   ```
-
-**See Item Status**
+  
+# Transaction Role
 ----
-  See the status of an item that has been purchased
+### Determine user role in transaction
 
 * **URL**
 
-  /item/:id/shipped
+  /items/:id/:email/transaction
 
 * **Method:**
   
   `GET`
   
-*  **URL Params**
+* **URL Params**
 
-   id: Integer
+   * id: Integer,
+   * email: String
    
-*  **Request Headers**
+* **Request Headers**
 
-  None
+    `Cookie: SESSION_ID` 
 
 * **Data Params**
 
-  None
-
+    None
+    
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 200
+  * **Content:** `{ role: '...' }`
  
 * **Error Response:**
 
-  * **Code:** 404  <br />
+  * **Code:** 500
 
 * **Sample Call:**
 
   ```javascript
-    fetch('http://localhost:3000/items/:id/shipped', {
+    fetch('http://localhost:9009/items/email/transaction', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-      }
+        'Accept': 'application/json'
+      },
+      credentials: 'include'
     })
   ```
-
-**Update Item Details**
+  
+# Transaction - Send Payment
 ----
-  Update an item's selling details
-  such as price or location
+ ### Send a payment and complete transaction
 
 * **URL**
 
-  /item/:id/update
+  /items/transaction
 
 * **Method:**
   
-  `PUT`
+  `POST`
   
-*  **URL Params**
+* **URL Params**
 
-   id:Integer
+   None
    
-*  **Request Headers**
+* **Request Headers**
 
-  None
+    `Cookie: SESSION_ID` 
 
 * **Data Params**
 
-  Details that need to be changed
-
+    "{"id:"..., "price:"...}"
+    * id: String
+    * price: Integer
+    * email: String
+    
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 200
+  * **Content:** `{ 'Successful Payment...' }`
  
 * **Error Response:**
 
-  * **Code:** 404  <br />
+  * **Code:** 500
 
 * **Sample Call:**
 
   ```javascript
-    fetch('http://localhost:3000/items/:id/update', {
-      method: 'PUT',
+    fetch('http://localhost:9009/items/transaction', {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: {
-        'something':'something'
-      }
+      credentials: 'include'
     })
   ```

@@ -1,9 +1,8 @@
 const assert = require('chai').assert;
+const db = require('../db/model');
 
 describe('Database', () => {
   describe('Database Unit Tests', () => {
-    const db = require('../db/model');
-
     describe('Items', () => {
       it('Should be able get get individual items by id');
 

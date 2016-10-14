@@ -38,7 +38,7 @@ module.exports = {
       // console.log(result);
       res.json({result});
     })
-    .catch(err => next('Error getting balance'))
+    .catch(err => next('Error getting balance'));
   },
   sendPayment(req, res, next) {
     const amount = Number(req.body.price);
